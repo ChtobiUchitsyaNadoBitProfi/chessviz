@@ -29,20 +29,20 @@ void scanh(int flag)
             if (inter(tempxy)) {
                 break;
             }
-            printf("Error,try gain:");
+            printf("Error, try gain : ");
         }
         if (flag == 1) {
             if (check1() == 1) {
                 break;
             } else {
-                printf("Error, try again:");
+                printf("Error, try again : ");
             }
         }
         if (flag == 2) {
             if (check2() == 1) {
                 break;
             } else
-                printf("Error, try again:");
+                printf("Error, try again : ");
         }
     }
 }
