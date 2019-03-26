@@ -1,8 +1,20 @@
 #include "board_print_plain.h"
 #include <stdio.h>
 
+extern int game;
 extern char board[8][8];
 extern int x1, y11, x2, y2;
+
+void muve()
+{
+    board[x2][y2] = board[x1][y11];
+    if ((x1 + y11) % 2){
+        board[x1][y11] = ' ';
+    }
+    else{
+        board[x1][y11] = (char)219;
+    }
+}
 
 void scanh(int flag)
 {
@@ -42,7 +54,7 @@ int inter(char tempxy[6])
     x2 = (int)tempxy[4] - 49;
     y2 = (int)tempxy[3] - 97;
     if ((strlen(tempxy) == 5) && (x2 < 8) && (x2 >= 0) && (y2 >= 0) && (y2 < 8)
-        && (x1 >= 0) && (x1 < 8) && (y11 >= 0) && (y11 < 8)){
+        && (x1 >= 0) && (x1 < 8) && (y11 >= 0) && (y11 < 8)) {
         return 1;
     }
     return 0;
