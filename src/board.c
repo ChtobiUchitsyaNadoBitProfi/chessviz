@@ -3,7 +3,7 @@
 
 extern int game;
 extern int x1,y11,x2,y2;
-extern char board[8][8];
+extern char board[9][9];
 
 void muve()
 {
@@ -12,7 +12,7 @@ void muve()
         board[x1][y11] = ' ';
     }
     else{
-        board[x1][y11] = (char)219;
+        board[x1][y11] = ' ';
     }
 }
 
@@ -29,20 +29,20 @@ void scanh(int flag)
             if (inter(tempxy)) {
                 break;
             }
-            printf("Error,try gain:");
+            printf("Error, try gain : ");
         }
         if (flag == 1) {
             if (check1() == 1) {
                 break;
             } else {
-                printf("Error, try again:");
+                printf("Error, try again : ");
             }
         }
         if (flag == 2) {
             if (check2() == 1) {
                 break;
             } else
-                printf("Error, try again:");
+                printf("Error, try again : ");
         }
     }
 }
@@ -87,11 +87,11 @@ int check1()
             && ((y11 - y2) == 1 || (y2 - y11) == 1) && (x1 - x2 == 1)) {
             return 1; //рубати
         }
-        if ((board[x2][y2] == (char)219 || board[x2][y2] == ' ') && (x1 == 6)
+        if ((board[x2][y2] == ' '| board[x2][y2] == ' ') && (x1 == 6)
             && (y11 == y2) && (x1 - x2 > 0) && (x1 - x2 < 3) && (pr_x())) {
             return 1; //ходи по пуствм клітинам з початкової позиції
         }
-        if ((board[x2][y2] == (char)219 || board[x2][y2] == ' ') && (y11 == y2)
+        if ((board[x2][y2] == ' ' || board[x2][y2] == ' ') && (y11 == y2)
             && (x1 - x2) == 1) {
             return 1; //ходи по порожніх клітин
         }
@@ -111,11 +111,11 @@ int check2()
             && (y11 - y2 == 1 || y11 - y2 == -1) && (x2 - x1 == 1)) {
             return 1; //рубати
         }
-        if ((board[x2][y2] == (char)219 || board[x2][y2] == ' ') && x1 == 1
+        if ((board[x2][y2] == ' ' || board[x2][y2] == ' ') && x1 == 1
             && y11 == y2 && x2 - x1 > 0 && x2 - x1 < 3 && (pr_x())) {
             return 1; //ходи по пуствм клітинам з початкової позиції
         }
-        if ((board[x2][y2] == (char)219 || board[x2][y2] == ' ') && y11 == y2
+        if ((board[x2][y2] == ' ' || board[x2][y2] == ' ') && y11 == y2
             && x2 - x1 == 1) {
             return 1; //ходи по порожніх клітин
         }       
