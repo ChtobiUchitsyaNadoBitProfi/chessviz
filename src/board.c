@@ -3,7 +3,7 @@
 
 extern int game;
 extern int x1,y11,x2,y2;
-extern char board[8][8];
+extern char board[9][9];
 
 void muve()
 {
