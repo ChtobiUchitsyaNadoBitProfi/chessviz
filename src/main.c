@@ -16,5 +16,6 @@ char board[8][8] = {
 int main()
 {
     showboard(board);
+    printf("Input example : a2-a3\n");
     return 0;
 };
