@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "board_print_plain.h"
 
 extern int game;
 extern int x1, y11, x2, y2;
