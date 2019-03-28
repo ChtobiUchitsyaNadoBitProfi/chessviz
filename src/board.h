@@ -1,5 +1,5 @@
-#ifndef H_plain
-#define H_plain
+#ifndef H_board
+#define H_board
 void scanh(int flag);
 #endif
 

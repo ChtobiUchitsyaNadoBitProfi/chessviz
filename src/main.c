@@ -22,7 +22,7 @@ char board[9][9] = {{'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'},
 //                    "RHBQKBHR"};
 int main()
 {
-    showboard(board);
+    showboard();
     printf("Input example : a2-a3\n");
     while (1) {
         printf("player 1 : ");
