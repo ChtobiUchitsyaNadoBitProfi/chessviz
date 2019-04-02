@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include "board_print_plain.h"
+#include <stdio.h>
 
 extern int game;
 extern int x1, y11, x2, y2;
@@ -16,7 +16,7 @@ void showboard()
         printf("\n");
     }
     printf("  ");
-    for (i = 0; i < 8; i++){
+    for (i = 0; i < 8; i++) {
         printf("%c", i + 65);
     }
     printf("\n");
