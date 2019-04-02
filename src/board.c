@@ -105,22 +105,23 @@ int check2()
 {
     if ((board[x2][y2] < 91) && (board[x2][y2] > 64)) {
         return 0;
-    }
-    switch (board[x1][y11]) {
-    case 'P':
-        if (((board[x2][y2] < 123) && (board[x2][y2] > 96))
-            && ((y11 - y2 == 1) || (y11 - y2 == -1)) && (x2 - x1 == 1)) {
-            return 1;
+    } else {
+        switch (board[x1][y11]) {
+        case 'P':
+            if (((board[x2][y2] < 123) && (board[x2][y2] > 96))
+                && ((y11 - y2 == 1) || (y11 - y2 == -1)) && (x2 - x1 == 1)) {
+                return 1;
+            }
+            if (((board[x2][y2] == ' ') || (board[x2][y2] == ' ')) && (x1 == 1)
+                && (y11 == y2) && (x2 - x1 > 0) && (x2 - x1 < 3) && (pr_x())) {
+                return 1;
+            }
+            if (((board[x2][y2] == ' ') || (board[x2][y2] == ' '))
+                && (y11 == y2) && (x2 - x1 == 1)) {
+                return 1;
+            }
+            break;
         }
-        if (((board[x2][y2] == ' ') || (board[x2][y2] == ' ')) && (x1 == 1)
-            && (y11 == y2) && (x2 - x1 > 0) && (x2 - x1 < 3) && (pr_x())) {
-            return 1;
-        }
-        if (((board[x2][y2] == ' ') || (board[x2][y2] == ' ')) && (y11 == y2)
-            && (x2 - x1 == 1)) {
-            return 1;
-        }       
-        break;
+
+        return 0;
     }
-    return 0;
-}
