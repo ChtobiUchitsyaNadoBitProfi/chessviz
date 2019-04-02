@@ -121,6 +121,6 @@ int check2()
             return 1; //ходи по порожніх клітин
         }       
         break;
-        }
-return 0;
+    }
+    return 0;
 }
