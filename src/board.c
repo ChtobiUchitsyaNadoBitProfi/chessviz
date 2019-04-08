@@ -62,18 +62,78 @@ int inter(char tempxy[6])
 
 int pr_x()
 {
-    if (y11 != y2)
+    if (y11 != y2) {
         return 0;
+    }
     int z1 = x1, z2 = x2, i;
     if (x1 > x2) {
         z2 = x1;
         z1 = x2;
     }
-    for (i = z1 + 1; i < z2; i++)
+    for (i = z1 + 1; i < z2; i++) {
         if ((board[i][y11] < 91 && board[i][y11] > 64)
             || (board[i][y11] < 123 && board[i][y11] > 96)) {
             return 0;
         }
+    }
+    return 1;
+}
+
+int pr_y()
+{
+    if (x1 != x2) {
+        return 0;
+    }
+    int z1 = y11, z2 = y2, i;
+    if (y11 > y2) {
+        z2 = y11;
+        z1 = y2;
+    }
+    for (i = z1 + 1; i < z2; i++) {
+        if ((desk[x1][i] < 91 && desk[x1][i] > 64)
+            || (desk[x1][i] < 123 && desk[x1][i] > 96)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int pr_Q()
+{
+    if ((x1 - x2 != 1 && x2 - x1 != 1) && (y2 - y11 != 1 && y11 - y2 != 1)) {
+        return 0;
+    }
+    return 1;
+}
+
+int pr_diag()
+{
+    int ti, tj, z1 = x2, z2 = x1;
+    if (((x2 - x1) != (y2 - y11)) && ((x2 - x1) != (y11 - y2))) {
+        return 0;
+    }
+    if (x2 > x1) {
+        ti = 1;
+        z1 = x1;
+        z2 = x2;
+    } else {
+        ti = -1;
+    }
+    if (y2 > y11) {
+        tj = 1;
+    } else {
+        tj = -1;
+    }
+    int i = x1 + ti;
+    int j = y11 + tj;
+    while (i < z2 && i > z1) {
+        if ((desk[i][j] < 91 && desk[i][j] > 64)
+            || (desk[i][j] < 123 && desk[i][j] > 96)) {
+            return 0;
+        }
+        i = i + ti;
+        j = j + tj;
+    }
     return 1;
 }
 
