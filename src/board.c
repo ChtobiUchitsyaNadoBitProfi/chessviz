@@ -6,7 +6,7 @@ extern int game;
 extern int x1, y11, x2, y2;
 extern char board[9][9];
 
-void muve()
+void move()
 {
     board[x2][y2] = board[x1][y11];
     if ((x1 + y11) % 2) {
@@ -97,6 +97,55 @@ int check1()
             return 1; //ходи по порожніх клітин
         }
         break;
+    case 'r':
+        if (x2 == x1 && (pr_y())) {
+            return 1;
+        }
+        if (y2 == y11 && (pr_x())) {
+            return 1;
+        }
+        break;
+    case 'h':
+        if (x1 - x2 == 2 && y11 - y2 == 1) {
+            return 1; // 3
+        }
+        if (x2 - x1 == 2 && y2 - y11 == 1) {
+            return 1; // 1
+        }
+        if (x2 - x1 == 2 && y11 - y2 == 1) {
+            return 1; // 4
+        }
+        if (x1 - x2 == 2 && y2 - y11 == 1) {
+            return 1; // 2
+        }
+        if (x1 - x2 == 1 && y2 - y11 == 2) {
+            return 1; // 5
+        }
+        if (x2 - x1 == 1 && y2 - y11 == 2) {
+            return 1; // 6
+        }
+        if (x1 - x2 == 1 && y11 - y2 == 2) {
+            return 1; // 7
+        }
+        if (x2 - x1 == 1 && y11 - y2 == 2) {
+            return 1; // 8
+        }
+        break;
+    case 'b':
+        if (pr_diag()) {
+            return 1;
+        }
+        break;
+    case 'k':
+        if (pr_diag() || pr_x() || pr_y()) {
+            return 1;
+        }
+        break;
+    case 'q':
+        if (pr_Q()) {
+            return 1;
+        }
+        break;
     }
     return 0;
 }
@@ -118,6 +167,55 @@ int check2()
             }
             if (((board[x2][y2] == ' ') || (board[x2][y2] == ' '))
                 && (y11 == y2) && (x2 - x1 == 1)) {
+                return 1;
+            }
+            break;
+        case 'R':
+            if (x2 == x1 && (pr_y())) {
+                return 1;
+            }
+            if (y2 == y11 && (pr_x())) {
+                return 1;
+            }
+            break;
+        case 'H':
+            if (x1 - x2 == 2 && y11 - y2 == 1) {
+                return 1; // 3
+            }
+            if (x2 - x1 == 2 && y2 - y11 == 1) {
+                return 1; // 1
+            }
+            if (x2 - x1 == 2 && y11 - y2 == 1) {
+                return 1; // 4
+            }
+            if (x1 - x2 == 2 && y2 - y11 == 1) {
+                return 1; // 2
+            }
+            if (x1 - x2 == 1 && y2 - y11 == 2) {
+                return 1; // 5
+            }
+            if (x2 - x1 == 1 && y2 - y11 == 2) {
+                return 1; // 6
+            }
+            if (x1 - x2 == 1 && y11 - y2 == 2) {
+                return 1; // 7
+            }
+            if (x2 - x1 == 1 && y11 - y2 == 2) {
+                return 1; // 8
+            }
+            break;
+        case 'B':
+            if (pr_diag()) {
+                return 1;
+            }
+            break;
+        case 'K':
+            if (pr_diag() || pr_x() || pr_y()) {
+                return 1;
+            }
+            break;
+        case 'Q':
+            if (pr_Q()) {
                 return 1;
             }
             break;
