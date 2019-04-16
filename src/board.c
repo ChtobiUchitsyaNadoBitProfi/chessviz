@@ -1,5 +1,6 @@
 #include "board.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 extern int game;
@@ -23,7 +24,7 @@ void scanh(int flag)
         while (1) {
             scanf("%s", tempxy);
             if (strcmp(tempxy, "exit") == 0 || strcmp(tempxy, "0") == 0) {
-                game = -1;
+                exit(0);
                 return;
             }
             if (inter(tempxy)) {
@@ -90,8 +91,8 @@ int pr_y()
         z1 = y2;
     }
     for (i = z1 + 1; i < z2; i++) {
-        if ((desk[x1][i] < 91 && desk[x1][i] > 64)
-            || (desk[x1][i] < 123 && desk[x1][i] > 96)) {
+        if ((board[x1][i] < 91 && board[x1][i] > 64)
+            || (board[x1][i] < 123 && board[x1][i] > 96)) {
             return 0;
         }
     }
@@ -127,8 +128,8 @@ int pr_diag()
     int i = x1 + ti;
     int j = y11 + tj;
     while (i < z2 && i > z1) {
-        if ((desk[i][j] < 91 && desk[i][j] > 64)
-            || (desk[i][j] < 123 && desk[i][j] > 96)) {
+        if ((board[i][j] < 91 && board[i][j] > 64)
+            || (board[i][j] < 123 && board[i][j] > 96)) {
             return 0;
         }
         i = i + ti;

@@ -13,9 +13,9 @@ int check1();
 int check2();
 #endif
 
-#ifndef H_muve
-#define H_muve
-void muve();
+#ifndef H_move
+#define H_move
+void move();
 #endif
 
 #ifndef H_inter
