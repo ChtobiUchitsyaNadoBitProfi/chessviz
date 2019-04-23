@@ -1,287 +1,386 @@
 #include "board.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-extern int game;
-extern int x1, y11, x2, y2;
-extern char board[9][9];
+extern char input[7];
+extern int X1, X2, Y1, Y2;
+extern char desk[8][8];
 
-void move()
+void scanan(int flag)
 {
-    board[x2][y2] = board[x1][y11];
-    if ((x1 + y11) % 2) {
-        board[x1][y11] = ' ';
-    } else {
-        board[x1][y11] = ' ';
-    }
-}
-
-void scanh(int flag)
-{
-    char tempxy[6] = "NULL";
     while (1) {
         while (1) {
-            scanf("%s", tempxy);
-            if (strcmp(tempxy, "exit") == 0 || strcmp(tempxy, "0") == 0) {
-                exit(0);
-                return;
-            }
-            if (inter(tempxy)) {
+            fgets(input, 7, stdin);
+            if (chartoint(input)) {
                 break;
             }
-            printf("Error, try gain : ");
+            printf("Введите заново:");
         }
         if (flag == 1) {
-            if (check1() == 1) {
+            if (white() == 1) {
                 break;
             } else {
-                printf("Error, try again : ");
+                printf("Введите заново:");
             }
         }
         if (flag == 2) {
-            if (check2() == 1) {
+            if (black() == 1) {
                 break;
-            } else
-                printf("Error, try again : ");
+            } else {
+                printf("Введите заново:");
+            }
         }
     }
 }
 
-int inter(char tempxy[6])
+int chartoint(char input[7])
 {
-    x1 = (int)tempxy[1] - 49;
-    y11 = (int)tempxy[0] - 97;
-    x2 = (int)tempxy[4] - 49;
-    y2 = (int)tempxy[3] - 97;
-    if ((strlen(tempxy) == 5) && (x2 < 8) && (x2 >= 0) && (y2 >= 0) && (y2 < 8)
-        && (x1 >= 0) && (x1 < 8) && (y11 >= 0) && (y11 < 8)) {
-        return 1;
+    if ((input[2] != '-') && (input[2] != 'x')) {
+        return 0;
     }
+    X1 = (int)input[0] - 'A';
+    Y1 = (int)input[1] - '1';
+    X2 = (int)input[3] - 'A';
+    Y2 = (int)input[4] - '1';
+    if ((input[2] == 'x') && (desk[Y2][X2] == ' ')) {
+        printf("Вроде никого нет, чтобы рубить?\n");
+        return 0;
+    }
+    if ((X2 < 8) && (X2 >= 0) && (Y2 >= 0) && (Y2 < 8) && (X1 >= 0) && (X1 < 8)
+        && (Y1 >= 0) && (Y1 < 8))
+        return 1;
     return 0;
 }
 
-int pr_x()
+int white()
 {
-    if (y11 != y2) {
-        return 0;
+    if ((desk[Y2][X2] > 'A') && (desk[Y2][X2] < 'S')) {
+        return 0; //не рубим своих
     }
-    int z1 = x1, z2 = x2, i;
-    if (x1 > x2) {
-        z2 = x1;
-        z1 = x2;
-    }
-    for (i = z1 + 1; i < z2; i++) {
-        if ((board[i][y11] < 91 && board[i][y11] > 64)
-            || (board[i][y11] < 123 && board[i][y11] > 96)) {
-            return 0;
+    switch (desk[Y1][X1]) {
+    case 'P':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
         }
-    }
-    return 1;
-}
-
-int pr_y()
-{
-    if (x1 != x2) {
-        return 0;
-    }
-    int z1 = y11, z2 = y2, i;
-    if (y11 > y2) {
-        z2 = y11;
-        z1 = y2;
-    }
-    for (i = z1 + 1; i < z2; i++) {
-        if ((board[x1][i] < 91 && board[x1][i] > 64)
-            || (board[x1][i] < 123 && board[x1][i] > 96)) {
-            return 0;
+        if ((desk[Y2][X2] == ' ') && (Y1 == 1) && (X1 == X2) && (Y2 - Y1 > 0)
+            && (Y2 - Y1 < 3) && checkY()) {
+            return 1; //начальный ход
         }
-    }
-    return 1;
-}
-
-int pr_Q()
-{
-    if ((x1 - x2 != 1 && x2 - x1 != 1) && (y2 - y11 != 1 && y11 - y2 != 1)) {
-        return 0;
-    }
-    return 1;
-}
-
-int pr_diag()
-{
-    int ti, tj, z1 = x2, z2 = x1;
-    if (((x2 - x1) != (y2 - y11)) && ((x2 - x1) != (y11 - y2))) {
-        return 0;
-    }
-    if (x2 > x1) {
-        ti = 1;
-        z1 = x1;
-        z2 = x2;
-    } else {
-        ti = -1;
-    }
-    if (y2 > y11) {
-        tj = 1;
-    } else {
-        tj = -1;
-    }
-    int i = x1 + ti;
-    int j = y11 + tj;
-    while (i < z2 && i > z1) {
-        if ((board[i][j] < 91 && board[i][j] > 64)
-            || (board[i][j] < 123 && board[i][j] > 96)) {
-            return 0;
+        if ((desk[Y2][X2] == ' ') && (X2 == X1) && (Y2 - Y1 == 1)) {
+            transformPawn();
+            return 1; //ход по пустым клеткам
         }
-        i = i + ti;
-        j = j + tj;
+        if ((desk[Y2][X2] < 's' && desk[Y2][X2] > 'a')
+            && ((X2 - X1 == 1) || (X2 - X1 == -1)) && (Y2 - Y1 == 1)
+            && (input[2] == 'x')) {
+            return 1; //рубим чужих
+        }
+        break;
+    case 'R':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if ((Y2 == Y1) && (checkX())) {
+            return 1;
+        }
+        if ((X2 == X1) && (checkY())) {
+            return 1;
+        }
+        break;
+    case 'N':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if ((Y1 - Y2 == 2) && (X1 - X2 == 1)) {
+            return 1;
+        }
+        if ((Y2 - Y1 == 2) && (X2 - X1 == 1)) {
+            return 1;
+        }
+        if ((Y2 - Y1 == 2) && (X1 - X2 == 1)) {
+            return 1;
+        }
+        if ((Y1 - Y2 == 2) && (X2 - X1 == 1)) {
+            return 1;
+        }
+        if ((Y1 - Y2 == 1) && (X2 - X1 == 2)) {
+            return 1;
+        }
+        if ((Y2 - Y1 == 1) && (X2 - X1 == 2)) {
+            return 1;
+        }
+        if ((Y1 - Y2 == 1) && (X1 - X2 == 2)) {
+            return 1;
+        }
+        if ((Y2 - Y1 == 1) && (X1 - X2 == 2)) {
+            return 1;
+        }
+        break;
+    case 'B':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if (checkD()) {
+            return 1;
+        }
+        break;
+    case 'K':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if ((Y1 - Y2 != 1) && (Y2 - Y1 != 1)
+            && ((X1 - X2 != 1) && (X2 - X1 != 1))) {
+            break;
+        } else {
+            return 1;
+        }
+        break;
+    case 'Q':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if (checkX() || checkY() || checkD()) {
+            return 1;
+        }
+        break;
     }
-    return 1;
+    return 0;
 }
-
-int check1()
+int black()
 {
-    if (board[x2][y2] < 123 && board[x2][y2] > 96) {
-        return 0; //не можна рубати себе
+    if ((desk[Y2][X2] > 'a') && (desk[Y2][X2] < 's')) {
+        return 0; //не рубим своих
     }
-    switch (board[x1][y11]) {
+    switch (desk[Y1][X1]) {
     case 'p':
-        if ((board[x2][y2] < 91) && (board[x2][y2] > 64)
-            && (((y11 - y2) == 1) || (y2 - y11) == 1) && (x1 - x2 == 1)) {
-            return 1; //рубати
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
         }
-        if (((board[x2][y2] == ' ') | (board[x2][y2] == ' ')) && (x1 == 6)
-            && (y11 == y2) && (x1 - x2 > 0) && (x1 - x2 < 3) && (pr_x())) {
-            return 1; //ходи по пуствм клітинам з початкової позиції
+        if ((desk[Y2][X2] == ' ') && (Y1 == 6) && (X1 == X2) && (Y1 - Y2 > 0)
+            && (Y1 - Y2 < 3) && checkY()) {
+            return 1; //начальный ход
         }
-        if ((((board[x2][y2] == ' ') || (board[x2][y2] == ' ')) && (y11 == y2)
-             && (x1 - x2) == 1)) {
-            return 1; //ходи по порожніх клітин
+        if ((desk[Y2][X2] == ' ') && (X2 == X1) && (Y1 - Y2 == 1)) {
+            transformPawn();
+            return 1; //ход по пустым клеткам
+        }
+        if ((desk[Y2][X2] < 'S' && desk[Y2][X2] > 'A')
+            && ((X1 - X2 == 1) || (X1 - X2 == -1)) && (Y1 - Y2 == 1)) {
+            return 1; //рубим чужих
         }
         break;
     case 'r':
-        if (x2 == x1 && (pr_y())) {
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if ((Y2 == Y1) && (checkX())) {
             return 1;
         }
-        if (y2 == y11 && (pr_x())) {
+        if ((X2 == X1) && (checkY())) {
             return 1;
         }
         break;
-    case 'h':
-        if (x1 - x2 == 2 && y11 - y2 == 1) {
-            return 1; // 3
+    case 'n':
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
         }
-        if (x2 - x1 == 2 && y2 - y11 == 1) {
-            return 1; // 1
+        if ((Y1 - Y2 == 2) && (X1 - X2 == 1)) {
+            return 1;
         }
-        if (x2 - x1 == 2 && y11 - y2 == 1) {
-            return 1; // 4
+        if ((Y2 - Y1 == 2) && (X2 - X1 == 1)) {
+            return 1;
         }
-        if (x1 - x2 == 2 && y2 - y11 == 1) {
-            return 1; // 2
+        if ((Y2 - Y1 == 2) && (X1 - X2 == 1)) {
+            return 1;
         }
-        if (x1 - x2 == 1 && y2 - y11 == 2) {
-            return 1; // 5
+        if ((Y1 - Y2 == 2) && (X2 - X1 == 1)) {
+            return 1;
         }
-        if (x2 - x1 == 1 && y2 - y11 == 2) {
-            return 1; // 6
+        if ((Y1 - Y2 == 1) && (X2 - X1 == 2)) {
+            return 1;
         }
-        if (x1 - x2 == 1 && y11 - y2 == 2) {
-            return 1; // 7
+        if ((Y2 - Y1 == 1) && (X2 - X1 == 2)) {
+            return 1;
         }
-        if (x2 - x1 == 1 && y11 - y2 == 2) {
-            return 1; // 8
+        if ((Y1 - Y2 == 1) && (X1 - X2 == 2)) {
+            return 1;
+        }
+        if ((Y2 - Y1 == 1) && (X1 - X2 == 2)) {
+            return 1;
         }
         break;
     case 'b':
-        if (pr_diag()) {
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if (checkD()) {
             return 1;
         }
         break;
     case 'k':
-        if (pr_diag() || pr_x() || pr_y()) {
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if ((Y1 - Y2 != 1) && (Y2 - Y1 != 1)
+            && ((X1 - X2 != 1) && (X2 - X1 != 1))) {
+            break;
+        } else {
             return 1;
         }
-        break;
     case 'q':
-        if (pr_Q()) {
+        if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+            printf("Вроде надо рубить?\n");
+            break;
+        }
+        if (checkX() || checkY() || checkD()) {
             return 1;
         }
         break;
     }
     return 0;
 }
-
-int check2()
+void move()
 {
-    if ((board[x2][y2] < 91) && (board[x2][y2] > 64)) {
-        return 0;
-    } else {
-        switch (board[x1][y11]) {
-        case 'P':
-            if (((board[x2][y2] < 123) && (board[x2][y2] > 96))
-                && ((y11 - y2 == 1) || (y11 - y2 == -1)) && (x2 - x1 == 1)) {
-                return 1;
-            }
-            if (((board[x2][y2] == ' ') || (board[x2][y2] == ' ')) && (x1 == 1)
-                && (y11 == y2) && (x2 - x1 > 0) && (x2 - x1 < 3) && (pr_x())) {
-                return 1;
-            }
-            if (((board[x2][y2] == ' ') || (board[x2][y2] == ' '))
-                && (y11 == y2) && (x2 - x1 == 1)) {
-                return 1;
-            }
-            break;
-        case 'R':
-            if (x2 == x1 && (pr_y())) {
-                return 1;
-            }
-            if (y2 == y11 && (pr_x())) {
-                return 1;
-            }
-            break;
-        case 'H':
-            if (x1 - x2 == 2 && y11 - y2 == 1) {
-                return 1; // 3
-            }
-            if (x2 - x1 == 2 && y2 - y11 == 1) {
-                return 1; // 1
-            }
-            if (x2 - x1 == 2 && y11 - y2 == 1) {
-                return 1; // 4
-            }
-            if (x1 - x2 == 2 && y2 - y11 == 1) {
-                return 1; // 2
-            }
-            if (x1 - x2 == 1 && y2 - y11 == 2) {
-                return 1; // 5
-            }
-            if (x2 - x1 == 1 && y2 - y11 == 2) {
-                return 1; // 6
-            }
-            if (x1 - x2 == 1 && y11 - y2 == 2) {
-                return 1; // 7
-            }
-            if (x2 - x1 == 1 && y11 - y2 == 2) {
-                return 1; // 8
-            }
-            break;
-        case 'B':
-            if (pr_diag()) {
-                return 1;
-            }
-            break;
-        case 'K':
-            if (pr_diag() || pr_x() || pr_y()) {
-                return 1;
-            }
-            break;
-        case 'Q':
-            if (pr_Q()) {
-                return 1;
-            }
-            break;
-        }
+    desk[Y2][X2] = desk[Y1][X1];
+    desk[Y1][X1] = ' ';
+}
 
+int checkY()
+{
+    int i, c1 = Y1, c2 = Y2;
+    if (X1 != X2) {
         return 0;
     }
+    if (Y1 > Y2) {
+        c1 = Y2;
+        c2 = Y1;
+    }
+    for (i = c1 + 1; i < c2; i++) {
+        if ((desk[i][X1] > 'a' && desk[i][X1] < 's')
+            || (desk[i][X1] > 'A' && desk[i][X1] < 'S')) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int checkX()
+{
+    int i, c1 = X1, c2 = X2;
+    if (Y1 != Y2) {
+        return 0;
+    }
+    if (X1 > X2) {
+        c1 = X2;
+        c2 = X1;
+    }
+    for (i = c1 + 1; i < c2; i++) {
+        if ((desk[Y1][i] > 'a' && desk[Y1][i] < 's')
+            || (desk[Y1][i] > 'A' && desk[Y1][i] < 'S')) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int checkD()
+{
+    int i, j, c1 = Y2, c2 = Y1, ci, cj;
+    if (((Y2 - Y1) != (X2 - X1)) && ((Y2 - Y1) != (X1 - X2))) {
+        return 0;
+    }
+    if (Y2 > Y1) {
+        c1 = Y1;
+        c2 = Y2;
+        ci = 1;
+    } else {
+        ci = -1;
+    }
+    if (X2 > X1) {
+        cj = 1;
+    } else {
+        cj = -1;
+    }
+    i = Y1 + ci;
+    j = X1 + cj;
+    while ((i < c2) && (i > c1)) {
+        if (((desk[i][j] > 'a') && (desk[i][j] < 's'))
+            || ((desk[i][j] > 'A') && (desk[i][j] < 'S'))) {
+            return 0;
+        }
+        i += ci;
+        j += cj;
+    }
+    return 1;
+}
+
+void transformPawn()
+{
+    char npawn;
+    if ((desk[Y1][X1] == 'p') && (Y2 == 0)) {
+        while (1) {
+            printf("Введите в какую фигуру вревратить:");
+            npawn = getchar();
+            if ((npawn == 'r') || (npawn == 'n') || (npawn == 'b')
+                || (npawn == 'q')) {
+                desk[Y1][X1] = npawn;
+                break;
+            } else {
+                printf("Введите правильную фигуру.\n");
+            }
+        }
+    }
+    if ((desk[Y1][X1] == 'P') && (Y2 == 7)) {
+        while (1) {
+            printf("Введите в какую фигуру вревратить:");
+            npawn = getchar();
+            if ((npawn == 'R') || (npawn == 'N') || (npawn == 'B')
+                || (npawn == 'Q')) {
+                desk[Y1][X1] = npawn;
+                break;
+            } else {
+                printf("Введите правильную фигуру.\n");
+            }
+        }
+    }
+}
+
+int checkWIn(int status)
+{
+    int i, j, player = 0;
+    if (status == 1) {
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                if (desk[i][j] == 'q') {
+                    player = 1;
+                }
+            }
+        }
+    }
+    if (status == 2) {
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                if (desk[i][j] == 'Q') {
+                    player = 2;
+                }
+            }
+        }
+    }
+
+    if (player == 0) {
+        return status;
+    }
+
+    return 0;
 }

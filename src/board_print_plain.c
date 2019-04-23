@@ -1,23 +1,20 @@
 #include "board_print_plain.h"
 #include <stdio.h>
 
-extern int game;
-extern int x1, y11, x2, y2;
-extern char board[9][9];
+extern char desk[8][8];
 
-void showboard()
+void printdesk()
 {
     int i, j;
-    for (i = 0; i < 8; i++) {
-        printf("%d|", i + 1);
+    for (i = 7; i >= 0; i--) {
+        printf("%d ", i + 1);
         for (j = 0; j < 8; j++) {
-            printf("%c", board[i][j]);
+            printf("%c ", desk[i][j]);
         }
         printf("\n");
     }
     printf("  ");
-    for (i = 0; i < 8; i++) {
-        printf("%c", i + 65);
-    }
+    for (i = 0; i < 8; i++)
+        printf("%c ", i + 97);
     printf("\n");
 }

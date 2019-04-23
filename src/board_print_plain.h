@@ -1,4 +1,6 @@
-#ifndef H_board_print_plain
-#define H_board_print_plain
-void showboard();
+#ifndef BOARD_PRINT_PLAIN_H
+#define BOARD_PRINT_PLAIN_H
+
+void printdesk();
+
 #endif

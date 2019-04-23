@@ -1,29 +1,15 @@
-#ifndef H_board
-#define H_board
-void scanh(int flag);
-#endif
+#ifndef BOARD_H
+#define BOARD_H
 
-#ifndef H_ch1
-#define H_ch1
-int check1();
-#endif
-
-#ifndef H_ch2
-#define H_ch2
-int check2();
-#endif
-
-#ifndef H_move
-#define H_move
+void scanan();
+int chartoint(char input[6]);
+int white();
+int black();
 void move();
-#endif
+int checkY();
+int checkX();
+int checkD();
+void transformPawn();
+int checkWIn(int status);
 
-#ifndef H_inter
-#define H_inter
-int inter(char tempxy[6]);
-#endif
-
-#ifndef H_pr
-#define H_pr
-int pr();
 #endif
