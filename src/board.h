@@ -1,15 +1,17 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-void scanan();
-int chartoint(char input[6]);
+#include "board.h"
+#include <stdio.h>
+#include <string.h>
+
 int white();
 int black();
 void move();
-int checkY();
-int checkX();
-int checkD();
-void transformPawn();
+int chY();
+int chX();
+int chD();
+void choose_a_pawn();
 int checkWIn(int status);
 
 #endif
