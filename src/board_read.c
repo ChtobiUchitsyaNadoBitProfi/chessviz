@@ -40,7 +40,6 @@ int chartoint(char input[7]) {
   X2 = (int)input[3] - 'A';
   Y2 = (int)input[4] - '1';
   if ((input[2] == 'x') && (board[Y2][X2] == ' ')) {
-  //  printf("                      Вроде никого нет, чтобы рубить?\n");
     return 0;
   }
   if ((X2 < 8) && (X2 >= 0) && (Y2 >= 0) && (Y2 < 8) && (X1 >= 0) && (X1 < 8) &&

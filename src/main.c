@@ -20,7 +20,7 @@ int main() {
   printboard();
 
   while (1) {
-    printf("                           Белые (Большие буквы):");
+    printf("                              Белые (Большие буквы):");
     scan(1);
     move();
     printboard();
@@ -29,7 +29,7 @@ int main() {
       break;
     }
 
-    printf("                          Черные (Маленькие буквы):");
+    printf("                             Черные (Маленькие буквы):");
     scan(2);
     move();
     printboard();
